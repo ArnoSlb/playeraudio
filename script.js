@@ -18,7 +18,26 @@ function popuplateUI({title, artist}){
     artistName.textContent = artist;
     thumbnail.src = `./ressources/thumbs/${title}.png`;
     musicPlayer.src = `./ressources/music/${title}.mp3`;
-    indexTxt.textContent = `${currentMusicIndex}/${musicsData.length}`
+    indexTxt.textContent = `${currentMusicIndex}/${musicsData.length}`;
 }
 
-popuplateUI(musicsData[currentMusicIndex - 1])  
+popuplateUI(musicsData[currentMusicIndex - 1]);  
+
+const playBtn = document.querySelector(".play-btn");
+
+playBtn.addEventListener('click', handlePlayPause)
+
+function handlePlayPause(){
+    if(musicPlayer.paused) play()
+    else pause()
+}
+
+function play(){
+    playBtn.querySelector("img").src = "./ressources/icons/pause-icon.svg";
+    musicPlayer.play();
+} 
+
+function pause(){
+    playBtn.querySelector("img").src = "./ressources/icons/play-icon.svg";
+    musicPlayer.pause();
+}  
