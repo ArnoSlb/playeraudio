@@ -74,15 +74,15 @@ musicPlayer.addEventListener("timeupdate", updateProgress);
 
 function updateProgress(e){
     current = e.srcElement.currentTime; 
-    formatValue(current, displayCurrentTime)
+    formatValue(current, displayCurrentTime);
 
     const progressValue = current / totalDuration;
-    progressBar.style.transform = `scaleX(${progressValue})`
+    progressBar.style.transform = `scaleX(${progressValue})`;
 } 
 
 const progressBarContainer = document.querySelector(".progress-container");
 
-progressBarContainer.addEventListener("click", setProgress)
+progressBarContainer.addEventListener("click", setProgress);
 
 let rect = progressBarContainer.getBoundingClientRect();
 let width = rect.width;
@@ -92,4 +92,19 @@ function setProgress(e){
     musicPlayer. currentTime = (x / width) * totalDuration;
 }
 
-  
+const nextBtn = document.querySelector('.next-btn');
+const prevBtn = document.querySelector('.prev-btn');
+
+[prevBtn, nextBtn].forEach(btn => btn.addEventListener('click', changeSong));
+
+musicPlayer.addEventListener("ended", changeSong);
+
+function changeSong(e){
+    e.target.classList.contains("next-btn") || e.type === "ended" ? currentMusicIndex++ : currentMusicIndex--; 
+
+    if(currentMusicIndex < 1 ) currentMusicIndex = musicsData.length;
+    else if(currentMusicIndex > musicsData.length) currentMusicIndex = 1  
+
+    popuplateUI(musicsData[currentMusicIndex - 1])
+    play()
+}  
