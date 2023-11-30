@@ -79,3 +79,17 @@ function updateProgress(e){
     const progressValue = current / totalDuration;
     progressBar.style.transform = `scaleX(${progressValue})`
 } 
+
+const progressBarContainer = document.querySelector(".progress-container");
+
+progressBarContainer.addEventListener("click", setProgress)
+
+let rect = progressBarContainer.getBoundingClientRect();
+let width = rect.width;
+
+function setProgress(e){
+    const x = e.clientX - rect.left;
+    musicPlayer. currentTime = (x / width) * totalDuration;
+}
+
+  
