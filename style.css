@@ -9,15 +9,18 @@ body {
     background: #3d3f41;
     background: linear-gradient(132deg, #3d3f41 6%, #384a52 61%, #4a4c4e 95%);
     font-family: "Lato", sans-serif;
-    padding: 100px 20px;
   }
 
 .audio-player-container {
   max-width: 350px;
-  margin: 0 auto;
   border-radius: 30px;
   background: #0d0c0f;
   background: linear-gradient(132deg, #0d0c0f 6%, #283339 61%, #29343a 95%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 } 
 
 .thumbnail-container {
@@ -29,7 +32,7 @@ body {
 .thumbnail {
   border-radius: 15px;
   width: 100%;
-  height: 280px;
+  max-width: 280px;
   object-fit: cover;
   object-position: center;
   box-shadow: 0 17px 36px #00000080;
@@ -140,4 +143,9 @@ button img {
 .play-btn img{
   width: 45px;
   height: 45 px;
+}
+
+canvas{
+  position: absolute;
+  z-index: 0;
 }
