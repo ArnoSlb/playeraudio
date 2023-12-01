@@ -136,30 +136,34 @@ function playAShuffledSong(){
 
 //Balls with Gravity
 
-const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
+const canvas = document.querySelector('canvas');
+const c = canvas.getContext('2d');
 
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
+// Variables
 const mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
 }
 
-const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
+const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
+
+var gravity = 1;
+var friction = 0.9;
 
 // Event Listeners
 addEventListener('mousemove', (event) => {
-  mouse.x = event.clientX
-  mouse.y = event.clientY
+  mouse.x = event.clientX;
+  mouse.y = event.clientY;
 }) 
 
 addEventListener('resize', () => {
-  canvas.width = innerWidth
-  canvas.height = innerHeight
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 
-  init()
+  init();
 })
 
 // Utility Functions
@@ -172,47 +176,54 @@ function randomColor(colors) {
 }
 
 // Objects
-class Object {
-  constructor(x, y, radius, color) {
-    this.x = x
-    this.y = y
-    this.radius = radius
-    this.color = color
+class Ball {
+  constructor(x, y, dy, radius, color) {
+    this.x = x;
+    this.y = y;
+    // dy = velocity/vitesse
+    this.dy = dy;
+    this.radius = radius;
+    this.color = color;
   }
 
   draw() {
-    c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    c.fillStyle = this.color
-    c.fill()
-    c.closePath()
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    c.fillStyle = this.color;
+    c.fill();
+    c.closePath();
   }
 
   update() {
-    this.draw()
+    // if la ball sort de l'ecran, on inverse par le bas on inverse le mvt
+    if( this.y + this.radius > canvas.height) {
+      // On multiple la velocité par de la friction pour que le mvt s'arrete
+      this.dy = -this.dy * friction;
+    } else {
+      // simule la gravité
+      this.dy += gravity;
+    }
+    // on donne un mvt vertical vers le bas à la balle
+    this.y += this.dy;
+    this.draw();
   }
 }
 
 // Implementation
-let objects
-function init() {
-  objects = []
-
-  for (let i = 0; i < 400; i++) {
-    // objects.push()
-  }
+var ball;
+function init(){
+  ball = new Ball(50, canvas.height / 2, 2, 30, 'red');
+  console.log(ball);
 }
 
 // Animation Loop
 function animate() {
-  requestAnimationFrame(animate)
-  c.clearRect(0, 0, canvas.width, canvas.height)
+  requestAnimationFrame(animate);
+  // nettoie le canvas, refresh images
+  c.clearRect(0, 0, canvas.width, canvas.height);
 
-  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y)
-  // objects.forEach(object => {
-  //  object.update()
-  // })
+  ball.update();
 }
 
-init()
-animate()
+init();
+animate();
