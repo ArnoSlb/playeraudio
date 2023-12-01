@@ -111,6 +111,7 @@ const prevBtn = document.querySelector('.prev-btn');
 musicPlayer.addEventListener("ended", changeSong);
 
 function changeSong(e){
+    init()
     if(shuffle) {
         playAShuffledSong();
         return;
@@ -148,10 +149,10 @@ const mouse = {
   y: innerHeight / 2
 }
 
-const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
+const colors = ['#bdfcfe','#fff', '#f1ddff'];
 
 var gravity = 1;
-var friction = 0.9;
+var friction = 0.7;
 
 // Event Listeners
 addEventListener('mousemove', (event) => {
@@ -165,6 +166,10 @@ addEventListener('resize', () => {
 
   init();
 })
+
+// addEventListener('click', function(){
+//   init();
+// })
 
 // Utility Functions
 function randomIntFromRange(min,max) {
@@ -205,23 +210,33 @@ class Ball {
       // simule la gravité
       this.dy += gravity;
     }
-    this.x += this.dx
+
+    // si les balles sortent de l'écran latéralement alors on inverse le mvt
+    if (this.x + this.radius + this.dx > canvas.width || this.x - this.radius < 0   ) {
+      this.dx = -this.dx * ( friction / 1.2 ) ;
+    }
+
+
+    this.x += this.dx;
     // on donne un mvt vertical vers le bas à la balle
     this.y += this.dy;
     this.draw();
   }
 }
 
-// Implementation
+// Implementation 
 var ball;
 var ballArray = [];
 function init(){
-  var radius = 30;
-  for (var i=0; i < 100; i++){
-    var x = randomIntFromRange(0, canvas.width - radius);
+  ballArray = [];
+  for (var i=0; i < 150; i++){
+    var radius = randomIntFromRange(8, 20)
+    var x = randomIntFromRange(radius, canvas.width - radius);
     var y = randomIntFromRange(0, canvas.height - radius);
-    var dx = randomIntFromRange(-2, 2)
-    ballArray.push(new Ball(x, y, dx, 2, radius, 'red'));
+    var dx = randomIntFromRange(-2, 2);
+    var dy = randomIntFromRange(-2, 2);
+    var color = randomColor(colors);
+    ballArray.push(new Ball(x, y, dx, dy, radius, color));
   }
 }
 
