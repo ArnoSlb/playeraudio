@@ -177,9 +177,10 @@ function randomColor(colors) {
 
 // Objects
 class Ball {
-  constructor(x, y, dy, radius, color) {
+  constructor(x, y, dx, dy, radius, color) {
     this.x = x;
     this.y = y;
+    this.dx = dx;
     // dy = velocity/vitesse
     this.dy = dy;
     this.radius = radius;
@@ -191,18 +192,20 @@ class Ball {
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     c.fillStyle = this.color;
     c.fill();
+    c.stroke()
     c.closePath();
   }
 
   update() {
     // if la ball sort de l'ecran, on inverse par le bas on inverse le mvt
-    if( this.y + this.radius > canvas.height) {
+    if( this.y + this.radius + this.dy > canvas.height) {
       // On multiple la velocité par de la friction pour que le mvt s'arrete
       this.dy = -this.dy * friction;
     } else {
       // simule la gravité
       this.dy += gravity;
     }
+    this.x += this.dx
     // on donne un mvt vertical vers le bas à la balle
     this.y += this.dy;
     this.draw();
@@ -211,18 +214,27 @@ class Ball {
 
 // Implementation
 var ball;
+var ballArray = [];
 function init(){
-  ball = new Ball(50, canvas.height / 2, 2, 30, 'red');
-  console.log(ball);
+  var radius = 30;
+  for (var i=0; i < 100; i++){
+    var x = randomIntFromRange(0, canvas.width - radius);
+    var y = randomIntFromRange(0, canvas.height - radius);
+    var dx = randomIntFromRange(-2, 2)
+    ballArray.push(new Ball(x, y, dx, 2, radius, 'red'));
+  }
 }
 
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
+
   // nettoie le canvas, refresh images
   c.clearRect(0, 0, canvas.width, canvas.height);
 
-  ball.update();
+  for (var i = 0; i < ballArray.length; i++){
+    ballArray[i].update();
+  }
 }
 
 init();
